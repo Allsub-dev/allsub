@@ -6,11 +6,10 @@
 
 
 ## Clone repository from GitHub
-- Use Allsub-dev account
+- Ask admin to add you as collaborator. Use invitation message to get access to the repository.
 
 ## Run
 - Open command prompt.
-- Locate src directory.
-- Execute docker-up.bat
+- Locate src directory, execute docker-up.bat
 - Browse to http://kubernetes.docker.internal/
 - Pay attention, application will be stopped as soon as you close the command prompt. Use Docker Desktop utility that to restart application later.
