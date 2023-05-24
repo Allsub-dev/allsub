@@ -1,0 +1,53 @@
+name: "allsub"
+
+services:
+  
+  ek:
+    container_name: ek
+    image: nshou/elasticsearch-kibana:latest
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: masstransit/rabbitmq
+
+  fe:
+    image: ${REGISTRY:-allsub}/allsub:webmvc-${PLATFORM:-linux}-${TAG:-latest}
+    container_name: fe
+    build:
+      context: .
+      dockerfile: Web/WebMVC/Dockerfile
+    volumes:
+      - usersdata:/appdata
+    depends_on:
+      - rabbitmq
+
+  vk-service:
+    image: ${REGISTRY:-allsub}/allsub:vkservice-${PLATFORM:-linux}-${TAG:-latest}
+    container_name: vk-service
+    build:
+      context: .
+      dockerfile: Services/VkService/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  yt-service:
+    image: ${REGISTRY:-allsub}/allsub:ytservice-${PLATFORM:-linux}-${TAG:-latest}
+    container_name: yt-service
+    build:
+      context: .
+      dockerfile: Services/YtService/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  test-ad-service:
+    image: ${REGISTRY:-allsub}/allsub:testadservice-${PLATFORM:-linux}-${TAG:-latest}
+    container_name: test-ad-service
+    build:
+      context: .
+      dockerfile: Services/TestAdService/Dockerfile
+    depends_on:
+      - rabbitmq
+      
+volumes:
+  usersdata:
+    external: false

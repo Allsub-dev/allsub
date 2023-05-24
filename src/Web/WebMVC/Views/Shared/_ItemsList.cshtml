@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@model AllSub.WebMVC.ViewModels.HomeIndexViewModel
+
+@if (Model.WallItems.Any())
+{
+    @foreach (var item in Model.WallItems)
+    {
+        <partial name="_ItemPartial" model="item" />
+    }
+}
+else if (SignInManager.IsSignedIn(User))
+{
+    <p>There is should be an explanation for user.</p>
+    <p>How to use subscriptions and other advantages of the registered user.</p>
+}
+else
+{
+    <p>There is should be an explanation for user.</p>
+    <p>We can search only with anonymous credentials on the commont services like youtube, rutube etc.</p>
+    <p>That to search by telegram/vk subscriptions, user should register on the site and provide corresponding credentials.</p>
+}

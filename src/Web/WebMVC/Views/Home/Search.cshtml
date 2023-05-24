@@ -1,0 +1,40 @@
+﻿@model AllSub.WebMVC.ViewModels.HomeIndexViewModel
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <p class="display-4">Login with admin@email.com / Pass123$admin.</p>
+</div>
+
+<form asp-controller="Home" asp-action="Search" method="get">
+    <p>
+        Search for: <input type="text" name="SearchString" value="@Model.QueryString" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <p>There are icons for filtering</p>
+            <ul>
+                <li>Youtube</li>
+                <li>Rutube</li>
+                <li>Telegram</li>
+                <li>VK</li>
+            </ul>
+        </div>
+        <div class="col">
+            <partial name="_ItemsList"/>
+        </div>
+        <div class="col">
+            @foreach (var adItem in Model.CommonAds)
+            {
+                <partial name="_ItemPartial" model="adItem" />
+            }
+        </div>
+    </div>
+</div>

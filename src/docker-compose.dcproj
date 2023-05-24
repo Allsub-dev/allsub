@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>D0D36F70-3786-4532-8883-AA7C2600AAFC</ProjectGuid>
+    <DockerLaunchBrowser>True</DockerLaunchBrowser>
+    <DockerServiceUrl>http://host.docker.internal:6100</DockerServiceUrl>
+    <DockerServiceName>webmvc</DockerServiceName>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerComposeProjectName>allsub</DockerComposeProjectName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".dockerignore" />
+    <None Include="docker-compose.override.example.yml" />
+    <None Include="docker-compose.yml" />
+  </ItemGroup>
+</Project>
