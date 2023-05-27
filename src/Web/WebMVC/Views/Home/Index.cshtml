@@ -18,7 +18,7 @@
                 <li>VK</li>
             </ul>
         </div>
-        <div class="col-8">
+        <div class="col-11">
             <div class="row p-1">
                 <div class="col-2">Search for:</div>
                 @if (SignInManager.IsSignedIn(User))
@@ -40,32 +40,17 @@
                 </div>
             </div>
 
-            <div id="searchList"></div>
+            <div id="searchList" class="row p-1"></div>
 
-        </div>
-        <div class="col-3">
-            @foreach (var adItem in Model.CommonAds)
-            {
-                <partial name="_ItemPartial" model="adItem" />
-            }
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-1">
-        </div>
-        <div class="col-8">
             <div class="row p-1">
-                <div class="col-12">
-                    <hr />
+                <div class="col-8">
+                    <div class="row p-1">
+                        <div class="col-2 text-end">
+                            <input type="button" id="sendButton" value="Next page" />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row p-1">
-                <div class="col-2 text-end">
-                    <input type="button" id="sendButton" value="Next page" />
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
         </div>
     </div>
 </div>

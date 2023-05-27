@@ -25,7 +25,14 @@ namespace AllSub.TestAdService.Services
                 @event.ConnectionId,
                 @event);
 
-            @event.PageSize = 1; // Just for debugging
+            if (!string.IsNullOrWhiteSpace(@event.QueryString))
+            {
+                @event.PageSize = 1; // Just for debugging
+            }
+            else
+            {
+                @event.PageSize = 6; // Just for debugging
+            }
 
             var searchRes = await _searchService.FetchAdsAsync(@event);
             _notificationService.PublishSearchResult(searchRes);
