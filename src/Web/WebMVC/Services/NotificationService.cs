@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AllSub.CommonCore.Interfaces.EventBus;
 using AllSub.CommonCore.Models;
 using System.Collections.Generic;
+using System.Web;
 
 namespace AllSub.WebMVC.Services
 {
@@ -83,7 +84,7 @@ namespace AllSub.WebMVC.Services
 
                 foreach (var data in eventData.Items)
                 {
-                    await _hubContext.Clients.Client(eventData.ConnectionId).SendAsync("ReceiveMessage", data);
+                    await _hubContext.Clients.Client(eventData.ConnectionId).SendAsync("ReceiveMessage", EncodeStrings(data));
                 }
             }
             else
@@ -98,6 +99,17 @@ namespace AllSub.WebMVC.Services
             {
                 _notificationCache.ClearData(connectionId);
             }
+        }
+
+        private ServiceData? EncodeStrings(ServiceData? data)
+        {
+            if (data != null)
+            {
+                data.Title = HttpUtility.HtmlDecode(data.Title)?.Replace('"', '\'');
+                data.Description = HttpUtility.HtmlDecode(data.Description)?.Replace('"', '\'');
+            }
+            
+            return data;
         }
     }
 }

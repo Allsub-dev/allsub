@@ -31,7 +31,7 @@ namespace AllSub.TestAdService.Services
             }
             else
             {
-                @event.PageSize = 6; // Just for debugging
+                @event.PageSize = 5; // Just for debugging
             }
 
             var searchRes = await _searchService.FetchAdsAsync(@event);

@@ -14,10 +14,10 @@ connection.on("ReceiveMessage", function (message) {
     div.setAttribute('style', 'border-width:1px;border-style:solid;border-color:black; margin: 2px 2px 2px 2px;');
     div.className = "col-2";
 
-    var divHtml = ` <a href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.description}">` +
+    var divHtml = ` <a href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.title} ${message.description}">` +
         ` <img src="${message.imageUrl}" alt="${message.type}" style="width:100px;height:100px;">` +
         ' </a>' +
-        ` <p><i>${message.type} </i> ${message.title}</p>`;
+        ` <p><i>${message.type} </i> ${message.title.substring(0, 13) } ...</p>`;
     div.innerHTML = divHtml;
 
     document.getElementById("searchList").appendChild(div);
