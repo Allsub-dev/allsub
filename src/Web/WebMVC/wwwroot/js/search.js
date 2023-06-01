@@ -6,56 +6,70 @@ var connection = new signalR.HubConnectionBuilder()
     .withAutomaticReconnect()
     .build();
 
-//Disable the send button until connection is established.
-document.getElementById("sendButton").disabled = true;
+function sendMessage() {
+    var message = document.getElementById("searchFormInput").value;
+    if (searchString.localeCompare(message) !== 0) {
+        searchString = message;
+        $("#searchList").empty();
+    }
+    var useSubs = false;
+    //var useSubsCheckBox = document.getElementById("usesub");
+    //if (useSubsCheckBox) {
+    //    useSubs = useSubsCheckBox.checked;
+    //}
+
+    connection.invoke("Search", message, useSubs).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
+
+window.onscroll = function (ev) {
+    if (window.innerHeight + window.pageYOffset - document.body.offsetHeight >= 0) {
+        sendMessage();
+    }
+};
+
+document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    sendMessage();
+});
 
 connection.on("ReceiveMessage", function (message) {
-    var div = document.createElement("div");
-    div.setAttribute('style', 'border-width:1px;border-style:solid;border-color:black; margin: 2px 2px 2px 2px;');
-    div.className = "col-2";
+    var messTypeStr = message.type.toString();
+    var liHtml =
+        ` <li class="grid__item message_type_${messTypeStr}">` +
+            ` <a class="video-tile" href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.title} ${message.description}">` + 
+                ' <figure class="video-tile__content">' +
+                    ` <img class="video-tile__poster" src="${message.imageUrl}" alt="${message.title}">` +
+                        ' <figcaption class="video-tile__desc">' +
+                            ` <h3 class="video-tile__headline">${message.title.substring(0, 15)} ...</h3>`;
+                            if (messTypeStr !== "0"){
+                                var messageTypeText = "";
+                                switch (messTypeStr) {
+                                    case "1":
+                                        messageTypeText = '<img class="menu__img" src="assets/service=youtube.svg" width="24" alt="">';
+                                        break;
+                                    case "2":
+                                        messageTypeText = '<img class="menu__img" src="assets/service=vk.svg" width="24" alt="">';
+                                        break;
+                                    default:
+                                        console.log(`Unknown message type: ${messTypeStr}.`);
+                                }
+                                //<p class="video-tile__author">Dickinson Group</p>
+                                liHtml = liHtml + ` <p class="video-tile__meta">${messageTypeText}</p>`;
+                            }
+    liHtml = liHtml + ' </figcaption>' +
+                ' </figure>' +
+            ' </a>' +
+        ' </li>';
 
-    var divHtml = ` <a href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.title} ${message.description}">` +
-        ` <img src="${message.imageUrl}" alt="${message.type}" style="width:100px;height:100px;">` +
-        ' </a>' +
-        ` <p><i>${message.type} </i> ${message.title.substring(0, 13) } ...</p>`;
-    div.innerHTML = divHtml;
-
-    document.getElementById("searchList").appendChild(div);
+    $("#searchList").append(liHtml);
 });
 
 connection.start().then(function () {
-    document.getElementById("sendButton").disabled = false;
     connection.invoke("Search", "", false).catch(function (err) {
         return console.error(err.toString());
     });
 }).catch(function (err) {
     return console.error(err.toString());
 });
-
-document.getElementById("sendButton").addEventListener("click", function (e) {
-    sendMessage(e);
-});
-
-document.getElementById("messageInput").addEventListener("keydown", function (e) {
-    if (e.code === "Enter") {  //checks whether the pressed key is "Enter"
-        sendMessage(e);
-    }
-});
-
-function sendMessage (event) {
-    var message = document.getElementById("messageInput").value;
-    if (searchString.localeCompare(message) !== 0) {
-        searchString = message;
-        document.getElementById("searchList").innerHTML = "";
-    }
-    var useSubs = false;
-    var useSubsCheckBox = document.getElementById("usesub");
-    if (useSubsCheckBox) {
-        useSubs = useSubsCheckBox.checked;
-    }
-
-    connection.invoke("Search", message, useSubs).catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
-}

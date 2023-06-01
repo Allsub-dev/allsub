@@ -59,7 +59,7 @@ namespace AllSub.VkService.Services
 
                 var req = new VideoSearchParams()
                 {
-                    Adult = true,
+                    Adult = false,
                     Count = requestData.PageSize,
                     Offset = offset,
                     Sort = VkNet.Enums.VideoSort.Relevance,

@@ -98,11 +98,6 @@ namespace AllSub.WebMVC.Controllers
             return viewModel;
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
