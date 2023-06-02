@@ -8,7 +8,7 @@ var connection = new signalR.HubConnectionBuilder()
 
 function sendMessage() {
     var message = document.getElementById("searchFormInput").value;
-    if (searchString.localeCompare(message) !== 0) {
+    if (!message || searchString.localeCompare(message) !== 0) {
         searchString = message;
         $("#searchList").empty();
     }
@@ -56,7 +56,7 @@ connection.on("ReceiveMessage", function (message) {
                                         console.log(`Unknown message type: ${messTypeStr}.`);
                                 }
                                 //<p class="video-tile__author">Dickinson Group</p>
-                                liHtml = liHtml + ` <p class="video-tile__meta">${messageTypeText}</p>`;
+                                liHtml = liHtml + ` <p class="video-tile__meta">${messageTypeText} ${message.metaData}</p>`;
                             }
     liHtml = liHtml + ' </figcaption>' +
                 ' </figure>' +

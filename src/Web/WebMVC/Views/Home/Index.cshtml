@@ -7,6 +7,12 @@
     ViewData["Title"] = "Search video";
 }
 
+@section heads {
+    <!-- Yandex.RTB 
+    <script>window.yaContextCb = window.yaContextCb || []</script>
+    <script src="https://yandex.ru/ads/system/context.js" async></script>-->
+}
+
 <header class="header">
     <form id="searchForm" class="search-form">
         <button class="search-form__submit" type="submit">
@@ -82,6 +88,17 @@
     <ul id="searchList" class="grid">
     </ul>
 </main>
+
+<!-- Yandex.RTB R-A-2418035-1 
+<div style="margin-left:100px" id="yandex_rtb_R-A-2418035-1"></div>
+<script>
+    window.yaContextCb.push(() => {
+        Ya.Context.AdvManager.render({
+            "blockId": "R-A-2418035-1",
+            "renderTo": "yandex_rtb_R-A-2418035-1"
+        })
+    })
+</script>-->
 
 @section scripts {
     <script src="~/js/signalr/dist/browser/signalr.js"></script>

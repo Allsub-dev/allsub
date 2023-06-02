@@ -10,6 +10,7 @@ using AllSub.CommonCore.Interfaces.EventBus;
 using AllSub.CommonCore.Models;
 using System.Collections.Generic;
 using System.Web;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AllSub.WebMVC.Services
 {
@@ -84,7 +85,7 @@ namespace AllSub.WebMVC.Services
 
                 foreach (var data in eventData.Items)
                 {
-                    await _hubContext.Clients.Client(eventData.ConnectionId).SendAsync("ReceiveMessage", EncodeStrings(data));
+                    await _hubContext.Clients.Client(eventData.ConnectionId).SendAsync("ReceiveMessage", PrepareData(data));
                 }
             }
             else
@@ -101,15 +102,44 @@ namespace AllSub.WebMVC.Services
             }
         }
 
-        private ServiceData? EncodeStrings(ServiceData? data)
+        private ServiceData? PrepareData(ServiceData? data)
         {
             if (data != null)
             {
                 data.Title = HttpUtility.HtmlDecode(data.Title)?.Replace('"', '\'');
                 data.Description = HttpUtility.HtmlDecode(data.Description)?.Replace('"', '\'');
+
+                var coma = (data.PublishedAt.HasValue && data.ViewCount.HasValue) ? ", " : string.Empty;
+                data.MetaData = $"{GetPublishedAt(data.PublishedAt)}{coma}{GetViewCount(data.ViewCount)}";
             }
             
             return data;
+        }
+        
+        private string GetViewCount(ulong? viewCount)
+        {
+            if (!viewCount.HasValue)
+            {
+                return string.Empty;
+            }
+            else if (viewCount.Value > 1000000) 
+            {
+                return $"{(int)(viewCount.Value / 1000000)} млн. просмотров";
+            }
+            else if (viewCount.Value > 1000)
+            {
+                return $"{(int)(viewCount.Value / 1000)} тыс. просмотров";
+            }
+            return $"{viewCount.Value} просмотров";
+        }
+
+        private string GetPublishedAt(DateTime? publishedAt)
+        {
+            if (!publishedAt.HasValue)
+            {
+                return string.Empty;
+            }
+            return $"Опубликовано {publishedAt.Value.Month}.{publishedAt.Value.Year}";
         }
     }
 }
