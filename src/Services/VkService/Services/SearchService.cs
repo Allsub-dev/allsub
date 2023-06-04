@@ -80,7 +80,8 @@ namespace AllSub.VkService.Services
                         Description = v.Description,
                         Relevance = 5,
                         ViewCount = (ulong?)v.Views,
-                        PublishedAt = v.Date
+                        PublishedAt = v.Date,
+                        OwnerTitle = string.Empty
                     };
                     items.Add(data);
                 }

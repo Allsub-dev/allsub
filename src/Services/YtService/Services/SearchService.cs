@@ -116,7 +116,8 @@ namespace AllSub.YtService.Services
                                 Description = item.Snippet.Description,
                                 Relevance = 5,
                                 ViewCount = item.Statistics.ViewCount,
-                                PublishedAt = item.Snippet.PublishedAt
+                                PublishedAt = item.Snippet.PublishedAt,
+                                OwnerTitle = item.Snippet.ChannelTitle
                             };
 
                             items.Add(data);

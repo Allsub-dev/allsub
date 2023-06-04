@@ -42,7 +42,10 @@ connection.on("ReceiveMessage", function (message) {
                 ' <figure class="video-tile__content">' +
                     ` <img class="video-tile__poster" src="${message.imageUrl}" alt="${message.title}">` +
                         ' <figcaption class="video-tile__desc">' +
-                            ` <h3 class="video-tile__headline">${message.title.substring(0, 15)} ...</h3>`;
+                                ` <h3 class="video-tile__headline">${message.title.substring(0, 15)} ...</h3>`;
+                            if (message.ownerTitle) {
+                                liHtml = liHtml + ` <p class="video-tile__author">${message.ownerTitle}</p>`;
+                            }
                             if (messTypeStr !== "0"){
                                 var messageTypeText = "";
                                 switch (messTypeStr) {
@@ -55,7 +58,6 @@ connection.on("ReceiveMessage", function (message) {
                                     default:
                                         console.log(`Unknown message type: ${messTypeStr}.`);
                                 }
-                                //<p class="video-tile__author">Dickinson Group</p>
                                 liHtml = liHtml + ` <p class="video-tile__meta">${messageTypeText} ${message.metaData}</p>`;
                             }
     liHtml = liHtml + ' </figcaption>' +

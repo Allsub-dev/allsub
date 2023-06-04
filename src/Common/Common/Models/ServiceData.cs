@@ -12,5 +12,6 @@ namespace AllSub.Common.Models
         public ulong? ViewCount { get; set; }
         public DateTime? PublishedAt { get; set; }
         public string? MetaData { get; set; }
+        public string? OwnerTitle { get; set; }
     }
 }
