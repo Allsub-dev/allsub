@@ -144,11 +144,11 @@ a {
     font-size: 10px;
 }
 
-    .menu__link--active,
-    .menu__link:not(.menu__link--disabled):hover {
-        background-color: #141414;
-        opacity: 1;
-    }
+.menu__link--active,
+.menu__link:not(.menu__link--disabled):hover {
+    background-color: #141414;
+    opacity: 1;
+}
 
 .menu__link--disabled {
     opacity: .5;

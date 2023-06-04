@@ -36,8 +36,14 @@ document.getElementById("searchForm").addEventListener("submit", function (e) {
 
 connection.on("ReceiveMessage", function (message) {
     var messTypeStr = message.type.toString();
+    var type = $('a.menu__link--active').data("type");
+    var displayStyle = ' style="display: none"'
+    if (type.toString() === messTypeStr || messTypeStr === "0" || type.toString() === "0") {
+        displayStyle = ' style="display: block"'
+    }
+
     var liHtml =
-        ` <li class="grid__item message_type_${messTypeStr}">` +
+        ` <li class="grid__item message_type_${messTypeStr}" ${displayStyle}>` +
             ` <a class="video-tile" href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.title} ${message.description}">` + 
                 ' <figure class="video-tile__content">' +
                     ` <img class="video-tile__poster" src="${message.imageUrl}" alt="${message.title}">` +
@@ -60,7 +66,7 @@ connection.on("ReceiveMessage", function (message) {
                                 }
                                 liHtml = liHtml + ` <p class="video-tile__meta">${messageTypeText} ${message.metaData}</p>`;
                             }
-    liHtml = liHtml + ' </figcaption>' +
+                            liHtml = liHtml + ' </figcaption>' +
                 ' </figure>' +
             ' </a>' +
         ' </li>';
@@ -74,4 +80,24 @@ connection.start().then(function () {
     });
 }).catch(function (err) {
     return console.error(err.toString());
+});
+
+$('a.menu__link:not(.menu__link--disabled)').on('click', function (event) {
+    $('a.menu__link--active').removeClass("menu__link--active")
+    $(this).addClass("menu__link--active");
+    // Get type
+    var type = $(this).data("type");
+    if (type === 0) {
+        // show all types
+        $('li[class^="grid__item message_type_"]').show();
+    }
+    else {
+        $(`li[class^="grid__item message_type_"]`).hide();
+
+        $(`li[class="grid__item message_type_0"]`).show();
+        $(`li[class="grid__item message_type_${type}"]`).show();
+    }
+
+    //event.stopPropagation();
+    //event.stopImmediatePropagation();
 });
