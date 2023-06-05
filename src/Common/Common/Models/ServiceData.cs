@@ -9,5 +9,9 @@ namespace AllSub.Common.Models
         public string? Url { get; set; }
         public string? ImageUrl { get; set;}
         public int Relevance { get; set; }
+        public ulong? ViewCount { get; set; }
+        public DateTime? PublishedAt { get; set; }
+        public string? MetaData { get; set; }
+        public string? OwnerTitle { get; set; }
     }
 }

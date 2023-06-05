@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AllSub.WebMVC.Controllers
 {
@@ -18,8 +20,10 @@ namespace AllSub.WebMVC.Controllers
         private readonly ITestAdServiceIntegration _testAdService;
         private readonly IYtServiceIntegration _ytServiceIntegration;
         private readonly IVkServiceIntegration _vkService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public HomeController(ILogger<HomeController> logger, 
+        public HomeController(ILogger<HomeController> logger,
+            IServiceProvider serviceProvider,
             ITestAdServiceIntegration testAdService,
             IYtServiceIntegration ytServiceIntegration,
             IVkServiceIntegration vkService)
@@ -28,6 +32,7 @@ namespace AllSub.WebMVC.Controllers
             _testAdService = testAdService;
             _vkService = vkService;
             _ytServiceIntegration = ytServiceIntegration;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task<IActionResult> Index()
@@ -43,6 +48,12 @@ namespace AllSub.WebMVC.Controllers
             if (!string.IsNullOrWhiteSpace(userName))
             {
                 serviceRequest.UserPreferences = new UserData { Email = userName };
+
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                    var adminUser = await userMgr.FindByNameAsync(userName);
+                }
             }
 
             var tasks = new List<Task<SearchCompletedEvent>>
@@ -53,33 +64,6 @@ namespace AllSub.WebMVC.Controllers
             SearchCompletedEvent[] completedTasks = await Task.WhenAll(tasks);   // TODO: consider to move try/catch from services to the controller
 
             return View(BuildViewModel(completedTasks.Where(t => t.IsSuccesfull), string.Empty)); // TODO: process errors
-        }
-
-        public async Task<IActionResult> Search(string? searchString)
-        {
-            var serviceRequest = new SearchRequestedEvent
-            {
-                PageSize = 5,
-                QueryString = searchString ?? string.Empty,
-                UserPreferences = null
-            };
-
-            var userName = User?.Identity?.Name;
-            if (!string.IsNullOrWhiteSpace(userName))
-            {
-                serviceRequest.UserPreferences = new UserData { Email = userName };
-            }
-
-            var tasks = new List<Task<SearchCompletedEvent>>
-            {
-                _testAdService.FetchAds(serviceRequest),
-                _ytServiceIntegration.FetchData(serviceRequest),
-                _vkService.FetchData(serviceRequest)
-            };
-
-            SearchCompletedEvent[] completedTasks = await Task.WhenAll(tasks);   // TODO: consider to move try/catch from services to the controller
-
-            return View("Search", BuildViewModel(completedTasks.Where(t => t.IsSuccesfull), searchString)); // TODO: process errors
         }
 
         private const int AdInsertDist = 3;
@@ -112,11 +96,6 @@ namespace AllSub.WebMVC.Controllers
             }
 
             return viewModel;
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

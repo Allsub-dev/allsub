@@ -36,9 +36,9 @@ namespace AllSub.TestAdService.Services
             };
             var items = new List<ServiceData>();
             var images = new string[] {
-                "http://www.mssdevlab.com/img/birthdays.png",
-                "http://www.mssdevlab.com/img/zoom.png",
-                "http://www.mssdevlab.com/img/visa.png"
+                "https://www.mssdevlab.com/img/birthdays.png",
+                "https://www.mssdevlab.com/img/zoom.png",
+                "https://www.mssdevlab.com/img/visa.png"
             };
             var curImage = 0;
             for (int i = 0; i < ret.PageSize; i++)
@@ -47,11 +47,13 @@ namespace AllSub.TestAdService.Services
                 {
                     Id = i.ToString(),
                     Type = ServiceType.AdService,
-                    Url = "http://www.mssdevlab.com",
-                    ImageUrl = images[curImage++],
-                    Title = $"TestAdService index:{i + 1}",
-                    Description = $"Example of the advertisment from provider. TestAdService email:'{email}' query:'{requestData.QueryString}'",
-                    Relevance = i
+                    Url = "https://www.mssdevlab.com",
+                    ImageUrl = "/assets/all-sub-text.png",
+                    Title = "Приложения на каждый день",
+                    Description = "\n Android приложения, которые нужны каждому.",
+                    Relevance = i,
+                    PublishedAt = new DateTime(2010, 10, 1),
+                    OwnerTitle = "MssDevLab"
                 };
                 items.Add(data);
                 if (curImage > 2)

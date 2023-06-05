@@ -7,68 +7,100 @@
     ViewData["Title"] = "Search video";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-1">
-            <p>There are icons for filtering</p>
-            <ul>
-                <li>Youtube</li>
-                <li>Rutube</li>
-                <li>Telegram</li>
-                <li>VK</li>
+@section heads {
+    <!-- Yandex.RTB 
+    <script>window.yaContextCb = window.yaContextCb || []</script>
+    <script src="https://yandex.ru/ads/system/context.js" async></script>-->
+}
+
+<header class="header">
+    <form id="searchForm" class="search-form">
+        <button class="search-form__submit" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
+                <path fill="#fff" d="m19.53 18.97-4.693-4.694a8.26 8.26 0 1 0-1.06 1.06l4.693 4.695a.75.75 0 1 0 1.06-1.062ZM1.75 9a6.75 6.75 0 1 1 6.75 6.75A6.758 6.758 0 0 1 1.75 9Z" />
+            </svg>
+        </button>
+        <button class="search-form__reset" type="reset">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
+                    <path fill="#fff" d="M15.28 14.22a.752.752 0 0 1-.53 1.28.75.75 0 0 1-.53-.22L8 9.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L6.94 8 .72 1.78A.75.75 0 1 1 1.78.72L8 6.94 14.22.72a.75.75 0 1 1 1.06 1.06L9.06 8l6.22 6.22Z" />
+                </svg>
+            </svg>
+        </button>
+        <input id="searchFormInput" class="search-form__input" type="text" placeholder="Что хочешь посмотреть?">
+    </form>
+    <div class="service-account"></div>
+</header>
+
+<aside class="aside">
+    <div class="aside__header">
+        <a href="#" class="logo">
+            <img src="~/assets/all-sub-text.png" width="64" alt="">
+        </a>
+    </div>
+    <div class="aside__main">
+        <nav class="menu__wrapper">
+            <ul class="menu">
+                <li class="menu__item">
+                    <a class="menu__link menu__link--active" data-type="0" href="#">
+                        <img class="menu__img" src="~/assets/allsub-icon.svg" width="24" alt="">
+                        <p class="menu__text">Все вместе</p>
+                    </a>
+                </li>
+                <li class="menu__item">
+                    <a class="menu__link" data-type="1" href="#">
+                        <img class="menu__img" src="~/assets/service=youtube.svg" width="24" alt="">
+                        <p class="menu__text">Youtube</p>
+                    </a>
+                </li>
+                <li class="menu__item">
+                    <a class="menu__link" data-type="2" href="#">
+                        <img class="menu__img" src="~/assets/service=vk.svg" width="24" alt="">
+                        <p class="menu__text">VK Video</p>
+                    </a>
+                </li>
+                <li class="menu__item">
+                    <a class="menu__link menu__link--disabled" href="#">
+                        <img class="menu__img" src="~/assets/service=Telegram.svg" width="24" alt="">
+                        <p class="menu__text">Telegram</p>
+                    </a>
+                </li>
+                <li class="menu__item">
+                    <a class="menu__link menu__link--disabled" href="#">
+                        <img class="menu__img" src="~/assets/service=rutube.svg" width="24" alt="">
+                        <p class="menu__text">Rutube</p>
+                    </a>
+                </li>
             </ul>
-        </div>
-        <div class="col-8">
-            <div class="row p-1">
-                <div class="col-2">Search for:</div>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
-                    <div class="col-3">
-                        <input type="checkbox" id="usesub" name="usesub" checked>
-                        <label for="usesub">Only subscriptions</label>
-                    </div>
-                }
-                else
-                {
-                    <div class="col-8"><input type="text" class="w-100" id="messageInput" /></div>
-                }
-            </div>
-            <div class="row p-1">
-                <div class="col-12">
-                    <hr />
-                </div>
-            </div>
-
-            <div id="searchList"></div>
-
-        </div>
-        <div class="col-3">
-            @foreach (var adItem in Model.CommonAds)
-            {
-                <partial name="_ItemPartial" model="adItem" />
-            }
+        </nav>
+    </div>
+    <div class="aside__footer">
+        <div class="account">
+            <a class="account__link" href="#">
+                <img class="menu__img" src="~/assets/user.svg" width="24" alt="">
+                <p class="menu__text">Войти</p>
+            </a>
         </div>
     </div>
-    <div class="row">
-        <div class="col-1">
-        </div>
-        <div class="col-8">
-            <div class="row p-1">
-                <div class="col-12">
-                    <hr />
-                </div>
-            </div>
-            <div class="row p-1">
-                <div class="col-2 text-end">
-                    <input type="button" id="sendButton" value="Next page" />
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-        </div>
-    </div>
-</div>
+</aside>
 
-<script src="~/js/signalr/dist/browser/signalr.js"></script>
-<script src="~/js/search.js"></script>
+<main class="main">
+    <ul id="searchList" class="grid">
+    </ul>
+</main>
+
+<!-- Yandex.RTB R-A-2418035-1 
+<div style="margin-left:100px" id="yandex_rtb_R-A-2418035-1"></div>
+<script>
+    window.yaContextCb.push(() => {
+        Ya.Context.AdvManager.render({
+            "blockId": "R-A-2418035-1",
+            "renderTo": "yandex_rtb_R-A-2418035-1"
+        })
+    })
+</script>-->
+
+@section scripts {
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/search.js"></script>
+}

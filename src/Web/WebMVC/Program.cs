@@ -15,6 +15,7 @@ using AllSub.WebMVC.Hubs;
 using AllSub.WebMVC.Services;
 using RabbitMQ.Client;
 using System;
+using Autofac.Core;
 
 namespace AllSub.WebMVC
 {
@@ -24,6 +25,15 @@ namespace AllSub.WebMVC
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.Host.ConfigureElasticSerilog("WebMVC");
+            // Attempt to avoid the secrets issue
+            try
+            {
+                builder.Configuration.AddJsonFile("/app/appsecrets.json");  // TODO: refactor
+            }
+            catch
+            {
+                builder.Configuration.AddJsonFile("/src/appsecrets.json");  // TODO: refactor
+            }
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -37,6 +47,13 @@ namespace AllSub.WebMVC
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddEventBus(builder.Configuration);
+
+            var configuration = builder.Configuration;
+            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = configuration["Secrets:Google:ClientId"] ?? string.Empty;
+                googleOptions.ClientSecret = configuration["Secrets:Google:ClientSecret"] ?? string.Empty;
+            });
 
             AddServices(builder);
 

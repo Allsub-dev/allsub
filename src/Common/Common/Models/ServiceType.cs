@@ -9,7 +9,7 @@ namespace AllSub.Common.Models
     public enum ServiceType
     {
         AdService = 0,
-        YtService,
-        VkService
+        YtService = 1,
+        VkService = 2
     }
 }

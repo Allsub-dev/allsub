@@ -59,7 +59,7 @@ namespace AllSub.VkService.Services
 
                 var req = new VideoSearchParams()
                 {
-                    Adult = true,
+                    Adult = false,
                     Count = requestData.PageSize,
                     Offset = offset,
                     Sort = VkNet.Enums.VideoSort.Relevance,
@@ -78,7 +78,10 @@ namespace AllSub.VkService.Services
                         ImageUrl = v.Image?.FirstOrDefault()?.Url.AbsoluteUri,
                         Title = v.Title,
                         Description = v.Description,
-                        Relevance = 5
+                        Relevance = 5,
+                        ViewCount = (ulong?)v.Views,
+                        PublishedAt = v.Date,
+                        OwnerTitle = string.Empty
                     };
                     items.Add(data);
                 }

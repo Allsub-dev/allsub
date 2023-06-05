@@ -1,49 +1,103 @@
 ﻿"use strict";
 
+var searchString = "";
 var connection = new signalR.HubConnectionBuilder()
     .withUrl("/searchHub")
     .withAutomaticReconnect()
     .build();
 
-//Disable the send button until connection is established.
-document.getElementById("sendButton").disabled = true;
-
-connection.on("ReceiveMessage", function (message) {
-    var div = document.createElement("div");
-    div.setAttribute('style', 'border-width:1px;border-style:solid;border-color:black; margin: 2px 2px 2px 2px;');
-
-    var divHtml = '<div class="row">' +
-        ' <div class="col">' +
-        ` <a href="${message.url}" target="_blank">` +
-        ` <img src="${message.imageUrl}" alt="${message.type}" style="width:100px;height:100px;">` +
-        ' </a>' +
-        ' </div>' +
-        ' <div class="col">' +
-        ` <p>${message.title}</p>` +
-        ` <p><i>${message.type} </i> ${ message.description }</p>` +
-        ' </div>' +
-        ' </div>';
-    div.innerHTML = divHtml;
-
-    document.getElementById("searchList").appendChild(div);
-});
-
-connection.start().then(function () {
-    document.getElementById("sendButton").disabled = false;
-}).catch(function (err) {
-    return console.error(err.toString());
-});
-
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    var message = document.getElementById("messageInput").value;
-    var useSubs = false;
-    var useSubsCheckBox = document.getElementById("usesub");
-    if (useSubsCheckBox) {
-        useSubs = useSubsCheckBox.checked;
+function sendMessage() {
+    var message = document.getElementById("searchFormInput").value;
+    if (!message || searchString.localeCompare(message) !== 0) {
+        searchString = message;
+        $("#searchList").empty();
     }
+    var useSubs = false;
+    //var useSubsCheckBox = document.getElementById("usesub");
+    //if (useSubsCheckBox) {
+    //    useSubs = useSubsCheckBox.checked;
+    //}
 
     connection.invoke("Search", message, useSubs).catch(function (err) {
         return console.error(err.toString());
     });
-    event.preventDefault();
+}
+
+window.onscroll = function (ev) {
+    if (window.innerHeight + window.pageYOffset - document.body.offsetHeight >= 0) {
+        sendMessage();
+    }
+};
+
+document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    sendMessage();
+});
+
+connection.on("ReceiveMessage", function (message) {
+    var messTypeStr = message.type.toString();
+    var type = $('a.menu__link--active').data("type");
+    var displayStyle = ' style="display: none"'
+    if (type.toString() === messTypeStr || messTypeStr === "0" || type.toString() === "0") {
+        displayStyle = ' style="display: block"'
+    }
+
+    var liHtml =
+        ` <li class="grid__item message_type_${messTypeStr}" ${displayStyle}>` +
+            ` <a class="video-tile" href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.title} ${message.description}">` + 
+                ' <figure class="video-tile__content">' +
+                    ` <img class="video-tile__poster" src="${message.imageUrl}" alt="${message.title}">` +
+                        ' <figcaption class="video-tile__desc">' +
+                                ` <h3 class="video-tile__headline">${message.title.substring(0, 15)} ...</h3>`;
+                            if (message.ownerTitle) {
+                                liHtml = liHtml + ` <p class="video-tile__author">${message.ownerTitle}</p>`;
+                            }
+                            if (messTypeStr !== "0"){
+                                var messageTypeText = "";
+                                switch (messTypeStr) {
+                                    case "1":
+                                        messageTypeText = '<img class="menu__img" src="assets/service=youtube.svg" width="24" alt="">';
+                                        break;
+                                    case "2":
+                                        messageTypeText = '<img class="menu__img" src="assets/service=vk.svg" width="24" alt="">';
+                                        break;
+                                    default:
+                                        console.log(`Unknown message type: ${messTypeStr}.`);
+                                }
+                                liHtml = liHtml + ` <p class="video-tile__meta">${messageTypeText} ${message.metaData}</p>`;
+                            }
+                            liHtml = liHtml + ' </figcaption>' +
+                ' </figure>' +
+            ' </a>' +
+        ' </li>';
+
+    $("#searchList").append(liHtml);
+});
+
+connection.start().then(function () {
+    connection.invoke("Search", "", false).catch(function (err) {
+        return console.error(err.toString());
+    });
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+
+$('a.menu__link:not(.menu__link--disabled)').on('click', function (event) {
+    $('a.menu__link--active').removeClass("menu__link--active")
+    $(this).addClass("menu__link--active");
+    // Get type
+    var type = $(this).data("type");
+    if (type === 0) {
+        // show all types
+        $('li[class^="grid__item message_type_"]').show();
+    }
+    else {
+        $(`li[class^="grid__item message_type_"]`).hide();
+
+        $(`li[class="grid__item message_type_0"]`).show();
+        $(`li[class="grid__item message_type_${type}"]`).show();
+    }
+
+    //event.stopPropagation();
+    //event.stopImmediatePropagation();
 });
