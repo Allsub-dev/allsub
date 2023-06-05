@@ -48,10 +48,12 @@ namespace AllSub.TestAdService.Services
                     Id = i.ToString(),
                     Type = ServiceType.AdService,
                     Url = "https://www.mssdevlab.com",
-                    ImageUrl = images[curImage++],
-                    Title = $"TestAdService index:{i + 1}",
-                    Description = $"Example of the advertisment from provider. TestAdService email:'{email}' query:'{requestData.QueryString}'",
-                    Relevance = i
+                    ImageUrl = "/assets/all-sub-text.png",
+                    Title = "Приложения на каждый день",
+                    Description = "\n Android приложения, которые нужны каждому.",
+                    Relevance = i,
+                    PublishedAt = new DateTime(2010, 10, 1),
+                    OwnerTitle = "MssDevLab"
                 };
                 items.Add(data);
                 if (curImage > 2)
