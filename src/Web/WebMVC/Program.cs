@@ -49,11 +49,6 @@ namespace AllSub.WebMVC
             builder.Services.AddEventBus(builder.Configuration);
 
             var configuration = builder.Configuration;
-            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-            {
-                googleOptions.ClientId = configuration["Secrets:Google:ClientId"] ?? string.Empty;
-                googleOptions.ClientSecret = configuration["Secrets:Google:ClientSecret"] ?? string.Empty;
-            });
 
             AddServices(builder);
 
@@ -73,12 +68,12 @@ namespace AllSub.WebMVC
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
@@ -87,14 +82,6 @@ namespace AllSub.WebMVC
             app.MapHub<SearchHub>("/searchHub");
 
             app.UseEventBus();
-
-            // Apply database migration automatically. Note that this approach is not
-            // recommended for production scenarios. Consider generating SQL scripts from
-            // migrations instead.
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    await SeedData.EnsureSeedData(scope, app.Configuration, app.Logger);
-            //}
 
             app.Run();
         }
