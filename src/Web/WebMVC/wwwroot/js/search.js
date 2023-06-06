@@ -5,22 +5,28 @@ var connection = new signalR.HubConnectionBuilder()
     .withUrl("/searchHub")
     .withAutomaticReconnect()
     .build();
+var lastSendTicks = 0;
 
 function sendMessage() {
-    var message = document.getElementById("searchFormInput").value;
-    if (!message || searchString.localeCompare(message) !== 0) {
-        searchString = message;
-        $("#searchList").empty();
-    }
-    var useSubs = false;
-    //var useSubsCheckBox = document.getElementById("usesub");
-    //if (useSubsCheckBox) {
-    //    useSubs = useSubsCheckBox.checked;
-    //}
+    var ticks = Date.now();
+    if ((ticks - lastSendTicks) > 500) {
+        lastSendTicks = ticks;
 
-    connection.invoke("Search", message, useSubs).catch(function (err) {
-        return console.error(err.toString());
-    });
+        var message = document.getElementById("searchFormInput").value;
+        if (!message || searchString.localeCompare(message) !== 0) {
+            searchString = message;
+            $("#searchList").empty();
+        }
+        var useSubs = false;
+        //var useSubsCheckBox = document.getElementById("usesub");
+        //if (useSubsCheckBox) {
+        //    useSubs = useSubsCheckBox.checked;
+        //}
+
+        connection.invoke("Search", message, useSubs).catch(function (err) {
+            return console.error(err.toString());
+        });
+    }
 }
 
 window.onscroll = function (ev) {
@@ -52,7 +58,7 @@ connection.on("ReceiveMessage", function (message) {
                             if (message.ownerTitle) {
                                 liHtml = liHtml + ` <p class="video-tile__author">${message.ownerTitle}</p>`;
                             }
-                            if (messTypeStr !== "0"){
+                            if (messTypeStr !== "0") {
                                 var messageTypeText = "";
                                 switch (messTypeStr) {
                                     case "1":
@@ -66,6 +72,9 @@ connection.on("ReceiveMessage", function (message) {
                                 }
                                 liHtml = liHtml + ` <p class="video-tile__meta">${messageTypeText} ${message.metaData}</p>`;
                             }
+                            else if (message.metaData){
+                                liHtml = liHtml + ` <p class="video-tile__meta">${message.metaData}</p>`;
+                            }
                             liHtml = liHtml + ' </figcaption>' +
                 ' </figure>' +
             ' </a>' +
@@ -74,13 +83,13 @@ connection.on("ReceiveMessage", function (message) {
     $("#searchList").append(liHtml);
 });
 
-connection.start().then(function () {
-    connection.invoke("Search", "", false).catch(function (err) {
+connection.start()
+    .then(function () {
+        sendMessage();
+    })
+    .catch(function (err) {
         return console.error(err.toString());
     });
-}).catch(function (err) {
-    return console.error(err.toString());
-});
 
 $('a.menu__link:not(.menu__link--disabled)').on('click', function (event) {
     $('a.menu__link--active').removeClass("menu__link--active")
@@ -101,3 +110,4 @@ $('a.menu__link:not(.menu__link--disabled)').on('click', function (event) {
     //event.stopPropagation();
     //event.stopImmediatePropagation();
 });
+

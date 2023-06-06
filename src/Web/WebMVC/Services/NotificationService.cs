@@ -109,8 +109,11 @@ namespace AllSub.WebMVC.Services
                 data.Title = HttpUtility.HtmlDecode(data.Title)?.Replace('"', '\'');
                 data.Description = HttpUtility.HtmlDecode(data.Description)?.Replace('"', '\'');
 
-                var coma = (data.PublishedAt.HasValue && data.ViewCount.HasValue) ? ", " : string.Empty;
-                data.MetaData = $"{GetPublishedAt(data.PublishedAt)}{coma}{GetViewCount(data.ViewCount)}";
+                if (string.IsNullOrWhiteSpace(data.MetaData))
+                {
+                    var coma = (data.PublishedAt.HasValue && data.ViewCount.HasValue) ? ", " : string.Empty;
+                    data.MetaData = $"{GetPublishedAt(data.PublishedAt)}{coma}{GetViewCount(data.ViewCount)}";
+                }
             }
             
             return data;

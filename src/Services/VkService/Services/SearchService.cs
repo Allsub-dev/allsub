@@ -4,6 +4,9 @@ using VkNet.Model.RequestParams;
 using VkNet.Model;
 using VkNet;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
+using Autofac.Features.OwnedInstances;
 
 namespace AllSub.VkService.Services
 {
@@ -31,8 +34,9 @@ namespace AllSub.VkService.Services
                 email = requestData.UserPreferences.Email;
             }
 
-            var items = new List<ServiceData>();
+            var items = new Dictionary<string, List<ServiceData>>();
             int pageNum = 1;
+
             if (!string.IsNullOrWhiteSpace(requestData.QueryString) && !string.IsNullOrEmpty(_defaultAccessToken))  // TODO: consider individual token
             {
                 // Prepare request to actual API
@@ -66,7 +70,7 @@ namespace AllSub.VkService.Services
                     Query = requestData.QueryString
                 };
 
-
+                var ownerIds = new List<string>();
                 VkNet.Utils.VkCollection<VkNet.Model.Attachments.Video> res = await api.Video.SearchAsync(req);
                 foreach (var v in res)
                 {
@@ -81,9 +85,42 @@ namespace AllSub.VkService.Services
                         Relevance = 5,
                         ViewCount = (ulong?)v.Views,
                         PublishedAt = v.Date,
-                        OwnerTitle = string.Empty
+                        OwnerTitle = "VK Video"
                     };
-                    items.Add(data);
+                    string ownerIdKey;
+                    if (v.OwnerId.HasValue)
+                    {
+                        ownerIdKey = Math.Abs(v.OwnerId.Value).ToString();
+                        ownerIds.Add(ownerIdKey);
+                    }
+                    else
+                    {
+                        ownerIdKey = (new Guid()).ToString();
+                    }
+
+                    if (items.TryGetValue(ownerIdKey, out List<ServiceData>? datas))
+                    {
+                        datas.Add(data);
+                    }
+                    else
+                    {
+                        items.Add(ownerIdKey, new List<ServiceData> { data });
+                    }
+                }
+
+                if (ownerIds.Count > 0)
+                {
+                    var ownersRes = await api.Groups.GetByIdAsync(ownerIds, null, null);
+                    foreach (var owner in ownersRes)
+                    {
+                        if (items.TryGetValue(owner.Id.ToString(), out List<ServiceData>? datas))
+                        {
+                            foreach(var serviceData in datas)
+                            {
+                                serviceData.OwnerTitle = owner.Name;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -95,7 +132,7 @@ namespace AllSub.VkService.Services
                 ServiceType = ServiceType.VkService,
                 IsSuccesfull = true,
                 ConnectionId = requestData.ConnectionId,
-                Items = items.ToArray()
+                Items = items.Values.SelectMany(a => a).OrderByDescending(i => i.ViewCount).ToArray()
             };
 
             var newPageNum = (++pageNum).ToString();

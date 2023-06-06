@@ -12,18 +12,6 @@ html {
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
-/*
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-    
-*/
 
 /* General styles */
 * {
@@ -55,6 +43,7 @@ a {
     left: 0;
     width: 100%;
     padding: 16px 16px 16px 96px;
+    z-index: 5;
 }
 
 .logo {
@@ -117,6 +106,7 @@ a {
 
 .aside {
     position: fixed;
+    z-index: 5;
     top: 0;
     left: 0;
     width: 80px;
@@ -176,6 +166,7 @@ a {
 
 .main {
     padding: 70px 0 0 80px;
+    z-index: 1;
 }
 
 .grid {
@@ -243,9 +234,13 @@ a {
         flex-basis: 100px;
     }
 
-        .menu__item:has(.menu__link--disabled) {
-            display: none;
-        }
+    .menu__item:has(.menu__link--disabled) {
+        display: none;
+    }
+
+    .account:has(.menu__link--disabled) {
+        display: none;
+    }
 
     .aside__footer {
         flex-basis: 100px;

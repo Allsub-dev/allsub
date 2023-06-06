@@ -48,12 +48,13 @@ namespace AllSub.TestAdService.Services
                     Id = i.ToString(),
                     Type = ServiceType.AdService,
                     Url = "https://www.mssdevlab.com",
-                    ImageUrl = "/assets/all-sub-text.png",
+                    ImageUrl = "/assets/mssdevlab.png",
                     Title = "Приложения на каждый день",
                     Description = "\n Android приложения, которые нужны каждому.",
                     Relevance = i,
                     PublishedAt = new DateTime(2010, 10, 1),
-                    OwnerTitle = "MssDevLab"
+                    OwnerTitle = "MssDevLab",
+                    MetaData = "Реклама"
                 };
                 items.Add(data);
                 if (curImage > 2)
