@@ -1,49 +1,29 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-@*
-<ul class="navbar-nav">
+
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
-</ul>
-*@
-<div class="account">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <a class="account__link" href="/Identity/Account/Manage/Index">
-            <img class="menu__img" src="~/assets/user.svg" width="24" alt="">
-            <p class="menu__text">@User.Identity?.Name</p>
-        </a>
-
+    <div class="account">
         <div class="account__link">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="menu__text">Выйти</button>
             </form>
         </div>
-    }
-    else
-    {
+    </div>
+    <div class="account">
+        <a class="account__link" href="/Identity/Account/Manage/Index">
+            <img class="menu__img" src="~/assets/user.svg" width="24" alt="">
+            <p class="menu__text">Настройки</p>
+        </a>
+    </div>
+}
+else
+{
+    <div class="account">
         <a class="account__link" href="/Identity/Account/Login">
             <img class="menu__img" src="~/assets/user.svg" width="24" alt="">
             <p class="menu__text">Войти</p>
         </a>
-    }
-</div>
+    </div>
+}
