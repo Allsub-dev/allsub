@@ -25,11 +25,14 @@ namespace AllSub.YtService.Services
         public async Task<SearchCompletedEvent> FetchDataAsync(SearchRequestedEvent requestData)
         {
             _logger.LogDebug($"YtService.SearchService.FetchDataAsync called");
+            // if user has token - authorize with personal token, else use default key
+            // if user has token - check subscriptions according to the flag
             // Prepare request to actual API
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
                 ApiKey = _defaultApiKey,
-                ApplicationName = "allsub.ru"
+                ApplicationName = "allsub.ru",
+                
             });
 
             string? email = null;

@@ -34,4 +34,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 COPY --from=publish /src/WebMVC.pfx /app/WebMVC.pfx
+COPY --from=publish /src/appsecrets.json /app/appsecrets.json
 ENTRYPOINT ["dotnet", "WebMVC.dll"]

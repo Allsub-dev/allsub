@@ -19,6 +19,7 @@ namespace AllSub.WebMVC.Hubs
 
         public void Search(string searchString, bool onlySubscriptions)
         {
+            var cookies = Context?.GetHttpContext()?.Request.Cookies;
             var serviceRequest = new SearchRequestedEvent
             {
                 OnlySubscriptions = onlySubscriptions,

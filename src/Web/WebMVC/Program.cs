@@ -16,6 +16,12 @@ using AllSub.WebMVC.Services;
 using RabbitMQ.Client;
 using System;
 using Autofac.Core;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System.Security.AccessControl;
 
 namespace AllSub.WebMVC
 {
@@ -43,17 +49,33 @@ namespace AllSub.WebMVC
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddSignalR();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddEventBus(builder.Configuration);
 
             var configuration = builder.Configuration;
-            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-            {
-                googleOptions.ClientId = configuration["Secrets:Google:ClientId"] ?? string.Empty;
-                googleOptions.ClientSecret = configuration["Secrets:Google:ClientSecret"] ?? string.Empty;
-            });
+            builder.Services.AddAuthentication()
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = configuration["Secrets:Google:ClientId"] ?? string.Empty;
+                    googleOptions.ClientSecret = configuration["Secrets:Google:ClientSecret"] ?? string.Empty;
+                    googleOptions.SaveTokens = true;
+                    googleOptions.AccessType = "offline";
+                
+
+                    googleOptions.Events.OnCreatingTicket = ctx =>
+                    {
+                        // Store tokens at this point
+                        List<AuthenticationToken> tokens = ctx.Properties.GetTokens().ToList();
+                        var temp = ctx.Properties.GetTokenValue("access_token");
+                        var temp1 = ctx.Properties.GetTokenValue("token_type");
+                        var temp2 = ctx.Properties.GetTokenValue("expires_at");
+
+                        return Task.CompletedTask;
+                    };
+                })
+                .AddCookie();
 
             AddServices(builder);
 
@@ -78,6 +100,7 @@ namespace AllSub.WebMVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
