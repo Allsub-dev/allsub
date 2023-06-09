@@ -22,6 +22,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Security.AccessControl;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace AllSub.WebMVC
 {
@@ -31,6 +33,15 @@ namespace AllSub.WebMVC
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.Host.ConfigureElasticSerilog("WebMVC");
+
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { "ru" };
+                options.SetDefaultCulture(supportedCultures[0])
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures);
+            });
+
             // Attempt to avoid the secrets issue
             try
             {
@@ -47,14 +58,15 @@ namespace AllSub.WebMVC
                 options.UseSqlite(connectionString));
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddEventBus(builder.Configuration);
             builder.Services.AddSignalR();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.AddControllersWithViews();
-            builder.Services.AddEventBus(builder.Configuration);
 
             var configuration = builder.Configuration;
+
             builder.Services.AddAuthentication()
                 .AddGoogle(googleOptions =>
                 {
@@ -62,7 +74,7 @@ namespace AllSub.WebMVC
                     googleOptions.ClientSecret = configuration["Secrets:Google:ClientSecret"] ?? string.Empty;
                     googleOptions.SaveTokens = true;
                     googleOptions.AccessType = "offline";
-                
+
 
                     googleOptions.Events.OnCreatingTicket = ctx =>
                     {
@@ -74,11 +86,9 @@ namespace AllSub.WebMVC
 
                         return Task.CompletedTask;
                     };
-                })
-                .AddCookie();
+                });
 
             AddServices(builder);
-
 
             var app = builder.Build();
 
