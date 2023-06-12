@@ -349,3 +349,16 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /src/docker-compose.override.yml
+src/Web/WebMVC/wwwroot/lib/bootstrap/dist/.DS_Store
+src/Web/WebMVC/wwwroot/lib/bootstrap/.DS_Store
+src/Web/WebMVC/wwwroot/lib/.DS_Store
+src/Web/WebMVC/wwwroot/.DS_Store
+src/Web/WebMVC/Views/.DS_Store
+src/Web/WebMVC/.DS_Store
+src/Web/.DS_Store
+src/Services/.DS_Store
+src/Common/.DS_Store
+src/.DS_Store
+.DS_Store
+src/appsecrets.json
+src/appsecrets.json

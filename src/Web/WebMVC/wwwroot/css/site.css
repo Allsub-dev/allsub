@@ -180,22 +180,61 @@ a {
 
 .video-tile {
     display: block;
+    line-height: 120%;
+    font-size: 14px;
 }
+
 
 .video-tile__content {
     margin: 0;
 }
 
+.video-tile__content h3 {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 120%;
+    margin: 8px 0 4px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+          
+}
+
+.video-tile__author {
+    margin: 2px 0;
+}
+
 .video-tile__poster {
     display: block;
-    aspect-ratio: auto;
     width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.video-tile__poster img {
+    object-fit: cover;
+    width: max-content;
+    height: max-content;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
 }
 
 .video-tile__meta {
     font-size: 12px;
+    color: #CBCBCB;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    align-content: start;
 }
 
+.video-tile__meta img {
+    width: 16px;
+    margin: 0 8px 0 0;
+}
 
 /* Mobile version styles */
 

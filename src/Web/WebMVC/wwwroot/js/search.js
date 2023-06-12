@@ -50,11 +50,11 @@ connection.on("ReceiveMessage", function (message) {
 
     var liHtml =
         ` <li class="grid__item message_type_${messTypeStr}" ${displayStyle}>` +
-            ` <a class="video-tile" href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.title} ${message.description}">` + 
+            ` <a class="video-tile" href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.title}">` + 
                 ' <figure class="video-tile__content">' +
-                    ` <img class="video-tile__poster" src="${message.imageUrl}" alt="${message.title}">` +
+                    ` <div class="video-tile__poster"><img src="${message.imageUrl}" alt="${message.title}"></div>` +
                         ' <figcaption class="video-tile__desc">' +
-                                ` <h3 class="video-tile__headline">${message.title.substring(0, 15)} ...</h3>`;
+                                ` <h3 class="video-tile__headline">${message.title}</h3>`;
                             if (message.ownerTitle) {
                                 liHtml = liHtml + ` <p class="video-tile__author">${message.ownerTitle}</p>`;
                             }
@@ -62,10 +62,10 @@ connection.on("ReceiveMessage", function (message) {
                                 var messageTypeText = "";
                                 switch (messTypeStr) {
                                     case "1":
-                                        messageTypeText = '<img class="menu__img" src="assets/service=youtube.svg" width="24" alt="">';
+                                        messageTypeText = '<img src="assets/service=youtube.svg" alt="">';
                                         break;
                                     case "2":
-                                        messageTypeText = '<img class="menu__img" src="assets/service=vk.svg" width="24" alt="">';
+                                        messageTypeText = '<img src="assets/service=vk.svg" alt="">';
                                         break;
                                     default:
                                         console.log(`Unknown message type: ${messTypeStr}.`);
