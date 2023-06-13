@@ -15,19 +15,9 @@
 
 <header class="header">
     <form id="searchForm" class="search-form">
-        <button class="search-form__submit" type="submit">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
-                <path fill="#fff" d="m19.53 18.97-4.693-4.694a8.26 8.26 0 1 0-1.06 1.06l4.693 4.695a.75.75 0 1 0 1.06-1.062ZM1.75 9a6.75 6.75 0 1 1 6.75 6.75A6.758 6.758 0 0 1 1.75 9Z" />
-            </svg>
-        </button>
-        <button class="search-form__reset" type="reset">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
-                    <path fill="#fff" d="M15.28 14.22a.752.752 0 0 1-.53 1.28.75.75 0 0 1-.53-.22L8 9.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L6.94 8 .72 1.78A.75.75 0 1 1 1.78.72L8 6.94 14.22.72a.75.75 0 1 1 1.06 1.06L9.06 8l6.22 6.22Z" />
-                </svg>
-            </svg>
-        </button>
-        <input id="searchFormInput" class="search-form__input" type="text" placeholder="Что хочешь посмотреть?">
+        <button class="search-form__submit" type="submit"><img src="~/assets/magnifying-glass.svg" alt="Search"></button>
+        <button class="search-form__reset" type="reset"><img src="~/assets/x-close.svg" alt="Clear"></button>
+        <input id="searchFormInput" class="search-form__input" type="search" placeholder="Что хочешь посмотреть?">
     </form>
     <div class="service-account"></div>
 </header>
@@ -87,9 +77,9 @@
 <main class="main">
     <ul id="searchList" class="grid">
     </ul>
-    <div class="button_box">
+    <form class="button_box">
             <button name="loading-more" type="submit"><img src="~/assets/magnifying-glass.svg" alt="Поиск"> Загрузить еще</button>
-    </div>
+    </form>
 </main>
 
 <!-- Yandex.RTB R-A-2418035-1 
