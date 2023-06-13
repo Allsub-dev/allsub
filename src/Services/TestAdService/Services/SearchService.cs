@@ -47,7 +47,7 @@ namespace AllSub.TestAdService.Services
                 {
                     Id = i.ToString(),
                     Type = ServiceType.AdService,
-                    Url = "https://www.mssdevlab.com",
+                    Url = "http://www.mssdevlab.com",
                     ImageUrl = "/assets/mssdevlab.png",
                     Title = "Приложения на каждый день",
                     Description = "\n Android приложения, которые нужны каждому.",
