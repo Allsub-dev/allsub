@@ -169,6 +169,40 @@ a {
     z-index: 1;
 }
 
+button {
+    display: flex;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    color: #CBCBCB;
+    background: #292929;
+    border: 0;
+    border-radius: 8px;
+    padding: 16px;
+    justify-content: center;
+}
+
+button:hover {
+    background: #007BD4;
+    color: white;
+}
+
+button img {
+    margin: 1px 4px 0 0;
+}
+
+.button_box {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.button_box button {
+    width: 300px;
+}
+
+
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -177,6 +211,8 @@ a {
     padding: 16px;
     list-style: none;
 }
+
+
 
 .video-tile {
     display: block;
@@ -233,8 +269,7 @@ a {
 }
 
 .video-tile__meta img {
-    width: 16px;
-    margin: 0 8px 0 0;
+    margin: -2px 8px 0 0;
 }
 
 /* Mobile version styles */
@@ -268,6 +303,7 @@ a {
     .menu {
         padding: 0;
         flex-direction: row;
+        justify-content: center;
     }
 
     .menu__item {
