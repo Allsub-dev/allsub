@@ -53,7 +53,7 @@ connection.on("ReceiveMessage", function (message) {
         ` <li class="grid__item message_type_${messTypeStr}" ${displayStyle}>` +
             ` <a class="video-tile" href="${message.url}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="${message.title}">` + 
                 ' <figure class="video-tile__content">' +
-                    ` <div class="video-tile__poster"><img src="${message.imageUrl}" alt="${message.title}"></div>` +
+                    ` <img class="video-tile__poster" src="${message.imageUrl}" alt="${message.title}">` +
                         ' <figcaption class="video-tile__desc">' +
                                 ` <h3 class="video-tile__headline">${message.title}</h3>`;
                             if (message.ownerTitle) {
