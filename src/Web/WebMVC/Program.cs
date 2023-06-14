@@ -16,6 +16,8 @@ using AllSub.WebMVC.Services;
 using RabbitMQ.Client;
 using System;
 using Autofac.Core;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace AllSub.WebMVC
 {
@@ -25,6 +27,22 @@ namespace AllSub.WebMVC
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.Host.ConfigureElasticSerilog("WebMVC");
+
+            var cultureInfoRu = new CultureInfo("ru");
+            cultureInfoRu.NumberFormat.CurrencySymbol = "\u20bd";   // unicode ruble symbol
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfoRu;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfoRu;
+
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { cultureInfoRu };
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+                options.DefaultRequestCulture = new RequestCulture(cultureInfoRu, cultureInfoRu);
+                options.ApplyCurrentCultureToResponseHeaders = true;
+            });
+
             // Attempt to avoid the secrets issue
             try
             {

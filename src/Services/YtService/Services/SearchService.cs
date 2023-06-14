@@ -111,7 +111,7 @@ namespace AllSub.YtService.Services
                                 Id = item.Id,
                                 Type = ServiceType.YtService,
                                 Url = $"https://www.youtube.com/watch?v={item.Id}",
-                                ImageUrl = item.Snippet.Thumbnails.Default__.Url,
+                                ImageUrl = item.Snippet.Thumbnails.High.Url,
                                 Title = item.Snippet.Title,
                                 Description = item.Snippet.Description,
                                 Relevance = 5,
