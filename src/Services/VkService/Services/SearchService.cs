@@ -79,7 +79,7 @@ namespace AllSub.VkService.Services
                         Id = v.Id.ToString(),
                         Type = ServiceType.VkService,
                         Url = v.Player.AbsoluteUri,
-                        ImageUrl = v.Image?.FirstOrDefault()?.Url.AbsoluteUri,
+                        ImageUrl = v.Image?.LastOrDefault()?.Url.AbsoluteUri,
                         Title = v.Title,
                         Description = v.Description,
                         Relevance = 5,

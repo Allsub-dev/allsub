@@ -25,6 +25,8 @@ using System.Linq;
 using System.Security.AccessControl;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace AllSub.WebMVC
 {
@@ -35,12 +37,19 @@ namespace AllSub.WebMVC
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.Host.ConfigureElasticSerilog("WebMVC");
 
+            var cultureInfoRu = new CultureInfo("ru");
+            cultureInfoRu.NumberFormat.CurrencySymbol = "\u20bd";   // unicode ruble symbol
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfoRu;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfoRu;
+
             builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[] { "ru" };
-                options.SetDefaultCulture(supportedCultures[0])
-                    .AddSupportedCultures(supportedCultures)
-                    .AddSupportedUICultures(supportedCultures);
+                var supportedCultures = new[] { cultureInfoRu };
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+                options.DefaultRequestCulture = new RequestCulture(cultureInfoRu, cultureInfoRu);
+                options.ApplyCurrentCultureToResponseHeaders = true;
             });
 
             // Attempt to avoid the secrets issue
@@ -84,7 +93,7 @@ namespace AllSub.WebMVC
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -99,14 +108,6 @@ namespace AllSub.WebMVC
             app.MapHub<SearchHub>("/searchHub");
 
             app.UseEventBus();
-
-            // Apply database migration automatically. Note that this approach is not
-            // recommended for production scenarios. Consider generating SQL scripts from
-            // migrations instead.
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    await SeedData.EnsureSeedData(scope, app.Configuration, app.Logger);
-            //}
 
             app.Run();
         }

@@ -11,6 +11,8 @@ using AllSub.CommonCore.Models;
 using System.Collections.Generic;
 using System.Web;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Globalization;
+using System.Data.SqlTypes;
 
 namespace AllSub.WebMVC.Services
 {
@@ -142,7 +144,8 @@ namespace AllSub.WebMVC.Services
             {
                 return string.Empty;
             }
-            return $"Опубликовано {publishedAt.Value.Month}.{publishedAt.Value.Year}";
+            // return $"Опубликовано {publishedAt.Value.Month}.{publishedAt.Value.Year}";
+            return publishedAt.Value.ToString("dd MMM yyyy", CultureInfo.CurrentUICulture);
         }
     }
 }

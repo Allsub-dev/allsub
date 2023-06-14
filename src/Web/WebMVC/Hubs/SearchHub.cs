@@ -19,16 +19,15 @@ namespace AllSub.WebMVC.Hubs
 
         public void Search(string searchString, bool onlySubscriptions)
         {
-            var cookies = Context?.GetHttpContext()?.Request.Cookies;
             var serviceRequest = new SearchRequestedEvent
             {
                 OnlySubscriptions = onlySubscriptions,
                 PageSize = 10,
                 QueryString = searchString ?? string.Empty,
-                ConnectionId = Context.ConnectionId
+                ConnectionId = Context?.ConnectionId
             };
 
-            var userName = Context.User?.Identity?.Name;
+            var userName = Context?.User?.Identity?.Name;
             if (!string.IsNullOrWhiteSpace(userName))
             {
                 serviceRequest.UserPreferences = new UserData { Email = userName };
