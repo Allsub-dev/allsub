@@ -15,6 +15,7 @@ function sendMessage() {
         var message = document.getElementById("searchFormInput").value;
         if (!message || searchString.localeCompare(message) !== 0) {
             searchString = message;
+            $("#load-more").hide();
             $("#searchList").empty();
         }
         var useSubs = false;
@@ -81,6 +82,9 @@ connection.on("ReceiveMessage", function (message) {
         ' </li>';
 
     $("#searchList").append(liHtml);
+    if ($("#searchList").children().length > 20) {
+        $("#load-more").show();
+    }
 });
 
 connection.start()
@@ -111,3 +115,6 @@ $('a.menu__link:not(.menu__link--disabled)').on('click', function (event) {
     //event.stopImmediatePropagation();
 });
 
+$('#load-more').on('click', function (event) {
+    sendMessage();
+});

@@ -4,7 +4,7 @@
 @model AllSub.WebMVC.ViewModels.HomeIndexViewModel
 
 @{
-    ViewData["Title"] = "Search video";
+    ViewData["Title"] = "Поиск";
 }
 
 @section heads {
@@ -15,8 +15,8 @@
 
 <header class="header">
     <form id="searchForm" class="search-form">
-        <button class="search-form__submit" type="submit"><img src="~/assets/magnifying-glass.svg" alt="Search"></button>
-        <button class="search-form__reset" type="reset"><img src="~/assets/x-close.svg" alt="Clear"></button>
+        <button class="search-form__submit" type="submit"><img src="~/assets/magnifying-glass.svg" alt="Поиск"></button>
+        <button class="search-form__reset" type="reset"><img src="~/assets/x-close.svg" alt="Очистить"></button>
         <input id="searchFormInput" class="search-form__input" type="search" placeholder="Что хочешь посмотреть?">
     </form>
     <div class="service-account"></div>
@@ -77,9 +77,9 @@
 <main class="main">
     <ul id="searchList" class="grid">
     </ul>
-    <form class="button_box">
-            <button name="loading-more" type="submit"><img src="~/assets/magnifying-glass.svg" alt="Поиск"> Загрузить еще</button>
-    </form>
+    <div class="button_box">
+            <button id="load-more" style="display:none"><img src="~/assets/magnifying-glass.svg" alt="Поиск"> Загрузить еще</button>
+    </div>
 </main>
 
 <!-- Yandex.RTB R-A-2418035-1 
