@@ -362,3 +362,4 @@ src/.DS_Store
 .DS_Store
 src/appsecrets.json
 src/appsecrets.json
+/src/appsecrets.json
