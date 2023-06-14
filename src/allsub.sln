@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "Common\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YtService", "Services\YtService\YtService.csproj", "{E90C1E0F-972C-43EB-A4F6-4A71AD8A6EC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OVkAuth", "Common\OVkAuth\OVkAuth.csproj", "{3134F69C-F5D7-4627-B511-9A3530CC5C10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{E90C1E0F-972C-43EB-A4F6-4A71AD8A6EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E90C1E0F-972C-43EB-A4F6-4A71AD8A6EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E90C1E0F-972C-43EB-A4F6-4A71AD8A6EC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3134F69C-F5D7-4627-B511-9A3530CC5C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3134F69C-F5D7-4627-B511-9A3530CC5C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3134F69C-F5D7-4627-B511-9A3530CC5C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3134F69C-F5D7-4627-B511-9A3530CC5C10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{4627DA95-6C5B-4F36-9DB3-5B485A6F8120} = {305286EA-BFFC-4054-9188-8D86363264CF}
 		{62A5EC0C-83F1-4D05-86E5-438205AEA1D5} = {9B900BF5-6743-4FF9-939B-229D8FABE383}
 		{E90C1E0F-972C-43EB-A4F6-4A71AD8A6EC6} = {305286EA-BFFC-4054-9188-8D86363264CF}
+		{3134F69C-F5D7-4627-B511-9A3530CC5C10} = {9B900BF5-6743-4FF9-939B-229D8FABE383}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {12DCEBDA-BC76-4444-B250-F3E855BC7E86}

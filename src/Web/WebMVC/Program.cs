@@ -13,6 +13,7 @@ using AllSub.EventBusRabbitMQ;
 using AllSub.WebMVC.Data;
 using AllSub.WebMVC.Hubs;
 using AllSub.WebMVC.Services;
+using AllSub.OVkAuth;
 using RabbitMQ.Client;
 using System;
 using Autofac.Core;
@@ -65,29 +66,7 @@ namespace AllSub.WebMVC
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            var configuration = builder.Configuration;
-
-            builder.Services.AddAuthentication()
-                .AddGoogle(googleOptions =>
-                {
-                    googleOptions.ClientId = configuration["Secrets:Google:ClientId"] ?? string.Empty;
-                    googleOptions.ClientSecret = configuration["Secrets:Google:ClientSecret"] ?? string.Empty;
-                    googleOptions.SaveTokens = true;
-                    googleOptions.AccessType = "offline";
-
-
-                    googleOptions.Events.OnCreatingTicket = ctx =>
-                    {
-                        // Store tokens at this point
-                        List<AuthenticationToken> tokens = ctx.Properties.GetTokens().ToList();
-                        var temp = ctx.Properties.GetTokenValue("access_token");
-                        var temp1 = ctx.Properties.GetTokenValue("token_type");
-                        var temp2 = ctx.Properties.GetTokenValue("expires_at");
-
-                        return Task.CompletedTask;
-                    };
-                });
-
+            AddAuthentication(builder);
             AddServices(builder);
 
             var app = builder.Build();
@@ -131,6 +110,56 @@ namespace AllSub.WebMVC
 
             app.Run();
         }
+
+        private static void AddAuthentication(WebApplicationBuilder builder) 
+        {
+            var configuration = builder.Configuration;
+
+            builder.Services.AddAuthentication()
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = configuration["Secrets:Google:ClientId"] ?? string.Empty;
+                    googleOptions.ClientSecret = configuration["Secrets:Google:ClientSecret"] ?? string.Empty;
+                    googleOptions.SaveTokens = true;
+                    googleOptions.AccessType = "offline";
+
+
+                    googleOptions.Events.OnCreatingTicket = ctx =>
+                    {
+                        // Store tokens at this point
+                        List<AuthenticationToken> tokens = ctx.Properties.GetTokens().ToList();
+                        var temp = ctx.Properties.GetTokenValue("access_token");
+                        var temp1 = ctx.Properties.GetTokenValue("token_type");
+                        var temp2 = ctx.Properties.GetTokenValue("expires_at");
+
+                        return Task.CompletedTask;
+                    };
+                })
+                .AddVk(vkOptions =>
+                {
+                    vkOptions.ClientId = configuration["Secrets:Vk:ClientId"] ?? string.Empty;
+                    vkOptions.ClientSecret = configuration["Secrets:Vk:ClientSecret"] ?? string.Empty;
+                    vkOptions.SaveTokens = true;
+                    vkOptions.ApiVersion = "5.131";
+
+                    vkOptions.Scope.Add("groups");
+                    vkOptions.Scope.Add("video");
+                    vkOptions.Scope.Add("offline");
+
+                    vkOptions.Events.OnCreatingTicket = ctx =>
+                    {
+                        // Store tokens at this point
+                        List<AuthenticationToken> tokens = ctx.Properties.GetTokens().ToList();
+                        var temp = ctx.Properties.GetTokenValue("access_token");
+                        var temp1 = ctx.Properties.GetTokenValue("token_type");
+                        var temp2 = ctx.Properties.GetTokenValue("expires_at");
+
+                        return Task.CompletedTask;
+                    };
+                });
+
+        }
+
         private static void UseEventBus(this IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
