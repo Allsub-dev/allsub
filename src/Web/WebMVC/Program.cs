@@ -13,7 +13,7 @@ using AllSub.EventBusRabbitMQ;
 using AllSub.WebMVC.Data;
 using AllSub.WebMVC.Hubs;
 using AllSub.WebMVC.Services;
-using AllSub.OVkAuth;
+using AllSub.OAuth.Vk;
 using RabbitMQ.Client;
 using System;
 using Autofac.Core;
@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using System.IO;
 
 namespace AllSub.WebMVC
 {
@@ -52,15 +53,11 @@ namespace AllSub.WebMVC
                 options.ApplyCurrentCultureToResponseHeaders = true;
             });
 
-            // Attempt to avoid the secrets issue
-            try
-            {
-                builder.Configuration.AddJsonFile("/app/appsecrets.json");  // TODO: refactor
-            }
-            catch
-            {
-                builder.Configuration.AddJsonFile("/src/appsecrets.json");  // TODO: refactor
-            }
+            // Attempt to avoid VS debugger issue
+            EnsureFile("WebMVC.pfx");
+            EnsureFile("appsecrets.json");
+
+            builder.Configuration.AddJsonFile("/app/appsecrets.json");  // TODO: refactor. Use true secrets
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -111,7 +108,13 @@ namespace AllSub.WebMVC
 
             app.Run();
         }
-
+        private static void EnsureFile(string fileName)
+        {
+            if (!File.Exists($"/app/{fileName}"))
+            {
+                File.Copy($"/src/{fileName}", $"/app/{fileName}");
+            }
+        }
         private static void AddAuthentication(WebApplicationBuilder builder) 
         {
             var configuration = builder.Configuration;

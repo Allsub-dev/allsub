@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AllSub.OVkAuth
+namespace AllSub.OAuth.Vk
 {
     /// <summary>
     /// Extension methods to configure Vk OAuth authentication.
@@ -66,6 +66,6 @@ namespace AllSub.OVkAuth
         /// <param name="configureOptions">A delegate to configure <see cref="VkOptions"/>.</param>
         /// <returns>A reference to <paramref name="builder"/> after the operation has completed.</returns>
         public static AuthenticationBuilder AddVk(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<VkOptions> configureOptions)
-            => builder.AddOAuth<VkOptions, VKAuthenticationHandler>(authenticationScheme, displayName, configureOptions);
+            => builder.AddOAuth<VkOptions, VkAuthenticationHandler>(authenticationScheme, displayName, configureOptions);
     }
 }

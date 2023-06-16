@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace AllSub.OVkAuth
+namespace AllSub.OAuth.Vk
 {
     public class VkOptions : OAuthOptions
     {
@@ -18,7 +18,7 @@ namespace AllSub.OVkAuth
             AuthorizationEndpoint = VkDefaults.AuthorizationEndpoint;
             TokenEndpoint = VkDefaults.TokenEndpoint;
             UserInformationEndpoint = VkDefaults.UserInformationEndpoint;
-            
+
             Scope.Add("openid");
             Scope.Add("profile");
             Scope.Add("email");
@@ -29,7 +29,7 @@ namespace AllSub.OVkAuth
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ApiVersion = "5.131";
         }
-        
+
         public string ApiVersion { get; set; }
     }
 }

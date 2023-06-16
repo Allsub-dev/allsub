@@ -13,18 +13,18 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 
-namespace AllSub.OVkAuth
+namespace AllSub.OAuth.Vk
 {
     /// <summary>
     /// Authentication handler for Vk's OAuth based authentication.
     /// </summary>
-    public class VKAuthenticationHandler : OAuthHandler<VkOptions>
+    public class VkAuthenticationHandler : OAuthHandler<VkOptions>
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="VKAuthenticationHandler"/>.
+        /// Initializes a new instance of <see cref="VkAuthenticationHandler"/>.
         /// </summary>
         /// <inheritdoc />
-        public VKAuthenticationHandler(IOptionsMonitor<VkOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
+        public VkAuthenticationHandler(IOptionsMonitor<VkOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         { }
 
@@ -314,8 +314,8 @@ namespace AllSub.OVkAuth
             queryStrings.Add("client_id", Options.ClientId);
             queryStrings.Add("redirect_uri", redirectUri);
             queryStrings.Add("v", Options.ApiVersion);
-            
-            AddQueryString(queryStrings, properties, GoogleChallengeProperties.ScopeKey, FormatScope, Options.Scope);
+
+            AddQueryString(queryStrings, properties, OAuthChallengeProperties.ScopeKey, FormatScope, Options.Scope);
 
             var state = Options.StateDataFormat.Protect(properties);
             queryStrings.Add("state", state);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AllSub.OVkAuth
+namespace AllSub.OAuth.Vk
 {
     public static class VkDefaults
     {

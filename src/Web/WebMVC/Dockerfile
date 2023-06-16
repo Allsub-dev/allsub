@@ -15,6 +15,7 @@ COPY "allsub.sln" "allsub.sln"
 COPY "Common/Common/Common.csproj" "Common/Common/Common.csproj"
 COPY "Common/CommonCore/CommonCore.csproj" "Common/CommonCore/CommonCore.csproj"
 COPY "Common/EventBusRabbitMQ/EventBusRabbitMQ.csproj" "Common/EventBusRabbitMQ/EventBusRabbitMQ.csproj"
+COPY "Common/OAuth/OAuth.csproj" "Common/OAuth/OAuth.csproj"
 COPY "Web/WebMVC/WebMVC.csproj" "Web/WebMVC/WebMVC.csproj"
 COPY ["Services/TestAdService/TestAdService.csproj", "Services/TestAdService/TestAdService.csproj"]
 COPY ["Services/YtService/YtService.csproj", "Services/YtService/YtService.csproj"]

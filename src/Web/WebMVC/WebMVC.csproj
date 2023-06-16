@@ -30,7 +30,7 @@
     <ProjectReference Include="..\..\Common\CommonCore\CommonCore.csproj" />
     <ProjectReference Include="..\..\Common\Common\Common.csproj" />
     <ProjectReference Include="..\..\Common\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
-    <ProjectReference Include="..\..\Common\OVkAuth\OVkAuth.csproj" />
+    <ProjectReference Include="..\..\Common\OAuth\OAuth.csproj" />
   </ItemGroup>
 
 </Project>
