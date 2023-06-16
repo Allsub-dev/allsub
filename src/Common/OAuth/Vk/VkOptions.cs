@@ -8,26 +8,27 @@ namespace AllSub.OAuth.Vk
     public class VkOptions : OAuthOptions
     {
         /// <summary>
-        /// Initializes a new <see cref="GoogleOptions"/>.
+        /// Initializes a new <see cref="VkOptions"/>.
         /// </summary>
         public VkOptions()
         {
-            ClaimsIssuer = "VK";
 
             CallbackPath = new PathString("/signin-vkontakte");
             AuthorizationEndpoint = VkDefaults.AuthorizationEndpoint;
             TokenEndpoint = VkDefaults.TokenEndpoint;
             UserInformationEndpoint = VkDefaults.UserInformationEndpoint;
 
-            Scope.Add("openid");
             Scope.Add("profile");
             Scope.Add("email");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
-            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ApiVersion = "5.131";
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "email");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            // TODO: actually we can't read the next claims for bad user data format returned from VK getUser
+            //ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+            //ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
         }
 
         public string ApiVersion { get; set; }
