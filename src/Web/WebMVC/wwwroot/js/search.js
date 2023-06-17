@@ -63,10 +63,10 @@ connection.on("ReceiveMessage", function (message) {
                                 var messageTypeText = "";
                                 switch (messTypeStr) {
                                     case "1":
-                                        messageTypeText = '<img src="assets/service=youtube.svg" alt="">';
+                                        messageTypeText = '<img src="assets/service=youtube.svg" alt="Youtube">';
                                         break;
                                     case "2":
-                                        messageTypeText = '<img src="assets/service=vk.svg" alt="">';
+                                        messageTypeText = '<img src="assets/service=vk.svg" alt="Vk Video">';
                                         break;
                                     default:
                                         console.log(`Unknown message type: ${messTypeStr}.`);
