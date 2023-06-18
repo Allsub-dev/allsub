@@ -34,14 +34,6 @@
                 <p class="menu__text">Rutube</p>
             </a>
         </li>
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <li class="menu__item">
-                <a class="account__link" href="/Identity/Account/Manage/Index">
-                    <img class="menu__img" src="~/assets/user-circle-gear.svg" width="24" alt="">
-                    <p class="menu__text">Настройки</p>
-                </a>
-            </li>
-        }
+        
     </ul>
 </nav>
