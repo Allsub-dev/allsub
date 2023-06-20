@@ -5,18 +5,30 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="account">
-        <div class="account__link">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="menu__text">Выйти</button>
-            </form>
-        </div>
+        <ul class="menu">
+            <li class="menu__item">
+                <a class="menu__link" href="/Identity/Account/Manage/Index">
+                    <img class="menu__img" src="~/assets/user-circle-gear.svg" width="24" alt="">
+                    <p class="menu__text">Профиль</p>
+                </a>
+            </li>
+            <li class="menu__item">
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="menu__link">
+                        <img class="menu__img" src="~/assets/sign-out=left.svg" width="24" alt="Профиль">
+                        <p class="menu__text">Выйти</p>
+                    </button>
+                </form>
+            </li>
+            </ul>
     </div>
 }
 else
 {
+        
     <div class="account">
         <a class="account__link" href="/Identity/Account/Login">
-            <img class="menu__img" src="~/assets/user.svg" width="24" alt="">
+            <img class="menu__img" src="~/assets/user.svg" width="24" alt="Профиль">
             <p class="menu__text">Войти</p>
         </a>
     </div>
