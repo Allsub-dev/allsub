@@ -10,6 +10,7 @@ namespace AllSub.WebMVC.Services
 {
     internal class VkServiceIntegration : BaseHttpCaller, IVkServiceIntegration
     {
+        // TODO: Delete integration services
         private readonly ILogger _logger;
         protected override ILogger Log => _logger;
 

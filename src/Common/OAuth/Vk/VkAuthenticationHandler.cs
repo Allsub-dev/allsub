@@ -38,7 +38,6 @@ namespace AllSub.OAuth.Vk
             var queryStrings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             queryStrings.Add("access_token", tokens.AccessToken ?? string.Empty);
             queryStrings.Add("v", Options.ApiVersion);
-            //queryStrings.Add("fields", "id,email,first_name,last_name");
 
             var userInfoEndpoint = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryStrings!);
 

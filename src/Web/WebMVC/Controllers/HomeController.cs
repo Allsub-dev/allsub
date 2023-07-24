@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using AllSub.WebMVC.Data;
 
 namespace AllSub.WebMVC.Controllers
 {
@@ -51,7 +52,7 @@ namespace AllSub.WebMVC.Controllers
 
                 using (var scope = _serviceProvider.CreateScope())
                 {
-                    var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                    var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                     var adminUser = await userMgr.FindByNameAsync(userName);
                 }
             }

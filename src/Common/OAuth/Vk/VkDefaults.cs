@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllSub.CommonCore.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace AllSub.OAuth.Vk
         /// <summary>
         /// The default scheme for Vk authentication. 
         /// </summary>
-        public const string AuthenticationScheme = "Vk";
+        public const string AuthenticationScheme = PropertyKeys.Vk.Key;
 
         /// <summary>
         /// The default display name for VK authentication. 

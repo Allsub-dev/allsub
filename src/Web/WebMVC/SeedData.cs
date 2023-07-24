@@ -22,12 +22,12 @@ namespace AllSub.WebMVC
             {
                 await context.Database.MigrateAsync();
 
-                var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var adminUser = await userMgr.FindByNameAsync("admin@email.com");
 
                 if (adminUser == null)
                 {
-                    adminUser = new IdentityUser
+                    adminUser = new ApplicationUser
                     {
                         UserName = "admin@email.com",
                         Email = "admin@email.com",

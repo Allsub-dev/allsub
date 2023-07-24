@@ -20,6 +20,9 @@ namespace AllSub.OAuth.Vk
 
             Scope.Add("profile");
             Scope.Add("email");
+            // Configured in the AddVk method
+            //Scope.Add("groups");
+            //Scope.Add("offline");
 
             ApiVersion = "5.131";
 

@@ -28,6 +28,8 @@ using Microsoft.AspNetCore.Http;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using System.IO;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.VisualStudio.Web.CodeGeneration;
 
 namespace AllSub.WebMVC
 {
@@ -69,11 +71,11 @@ namespace AllSub.WebMVC
             builder.Services.AddEventBus(builder.Configuration);
             builder.Services.AddSignalR();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            AddAuthentication(builder);
             AddServices(builder);
+            AddAuthentication(builder);
 
             var app = builder.Build();
 
@@ -119,6 +121,12 @@ namespace AllSub.WebMVC
         {
             var configuration = builder.Configuration;
 
+            Func<TicketReceivedContext, Task> manageTicketReceived  = ctx =>
+            {
+                var manager = ctx.HttpContext.RequestServices.GetRequiredService<IUserExternalInfoManager>();
+                return manager.SaveTicket(ctx);
+            };
+
             builder.Services.AddAuthentication()
                 .AddGoogle(googleOptions =>
                 {
@@ -127,17 +135,7 @@ namespace AllSub.WebMVC
                     googleOptions.SaveTokens = true;
                     googleOptions.AccessType = "offline";
 
-
-                    googleOptions.Events.OnCreatingTicket = ctx =>
-                    {
-                        // Store tokens at this point
-                        List<AuthenticationToken> tokens = ctx.Properties.GetTokens().ToList();
-                        var temp = ctx.Properties.GetTokenValue("access_token");
-                        var temp1 = ctx.Properties.GetTokenValue("token_type");
-                        var temp2 = ctx.Properties.GetTokenValue("expires_at");
-
-                        return Task.CompletedTask;
-                    };
+                    googleOptions.Events.OnTicketReceived = manageTicketReceived;
                 })
                 .AddVk(vkOptions =>
                 {
@@ -150,16 +148,7 @@ namespace AllSub.WebMVC
                     vkOptions.Scope.Add("video");
                     vkOptions.Scope.Add("offline");
 
-                    vkOptions.Events.OnCreatingTicket = ctx =>
-                    {
-                        // Store tokens at this point
-                        List<AuthenticationToken> tokens = ctx.Properties.GetTokens().ToList();
-                        var temp = ctx.Properties.GetTokenValue("access_token");
-                        var temp1 = ctx.Properties.GetTokenValue("token_type");
-                        var temp2 = ctx.Properties.GetTokenValue("expires_at");
-
-                        return Task.CompletedTask;
-                    };
+                    vkOptions.Events.OnTicketReceived = manageTicketReceived;
                 });
 
         }
@@ -179,6 +168,7 @@ namespace AllSub.WebMVC
 
             builder.Services.AddTransient<INotificationCache, NotificationCache>();
             builder.Services.AddTransient<INotificationService,  NotificationService>();
+            builder.Services.AddTransient<IUserExternalInfoManager, UserExternalInfoManager>();
         }
 
         private static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
