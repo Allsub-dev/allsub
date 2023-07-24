@@ -9,5 +9,6 @@ namespace AllSub.Common.Models
     public class UserData
     {
         public string? Email { get; set; }
+        public IEnumerable<AllSubProperty> Properties { get; set; } = Enumerable.Empty<AllSubProperty>();
     }
 }

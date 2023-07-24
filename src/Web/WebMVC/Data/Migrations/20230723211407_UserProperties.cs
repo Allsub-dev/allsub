@@ -16,7 +16,7 @@ namespace AllSub.WebMVC.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Key = table.Column<string>(nullable: true),
+                    Key = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },

@@ -37,10 +37,6 @@ namespace AllSub.WebMVC.Services
         public void StartSearch(SearchRequestedEvent request)
         {
             _logger.LogDebug("NotificationService StartSearch started");
-            if (request.UserPreferences?.Email != null)
-            {
-                // TODO: load user data
-            }
 
             if (!string.IsNullOrWhiteSpace(request.ConnectionId))
             {
