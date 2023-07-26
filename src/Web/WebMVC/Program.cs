@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Localization;
 using System.IO;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.VisualStudio.Web.CodeGeneration;
+using AllSub.Common.Services;
 
 namespace AllSub.WebMVC
 {
@@ -121,11 +122,11 @@ namespace AllSub.WebMVC
         {
             var configuration = builder.Configuration;
 
-            Func<TicketReceivedContext, Task> manageTicketReceived  = ctx =>
+            static Task manageTicketReceived(TicketReceivedContext ctx)
             {
                 var manager = ctx.HttpContext.RequestServices.GetRequiredService<IUserExternalInfoManager>();
                 return manager.SaveTicket(ctx);
-            };
+            }
 
             builder.Services.AddAuthentication()
                 .AddGoogle(googleOptions =>

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AllSub.WebMVC.Services
+namespace AllSub.Common.Services
 {
     // TODO: Replace in memory cache with distributed cache on production
     public class NotificationCache : INotificationCache
@@ -29,7 +29,7 @@ namespace AllSub.WebMVC.Services
             _memoryCache.Set(CreateCacheKey(connectionId), dataDict, TimeSpan.FromHours(2));
         }
 
-        private string CreateCacheKey(string connectionId)
+        private static string CreateCacheKey(string connectionId)
         {
             return  $"Services.NotificationCache.{connectionId}";
         }

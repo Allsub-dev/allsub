@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AllSub.WebMVC.Services
+namespace AllSub.Common.Services
 {
     public interface INotificationCache
     {
